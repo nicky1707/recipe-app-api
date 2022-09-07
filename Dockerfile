@@ -1,7 +1,7 @@
 FROM python:3.9-alpine3.13
 LABEL maintainer="selina"
 
-ENV PYTHONBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # These folders will be copied to the docker image
 COPY ./requirements.txt /tmp/requirements.txt

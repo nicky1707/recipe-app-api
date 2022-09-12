@@ -1,20 +1,28 @@
 FROM python:3.9-alpine3.13
 LABEL maintainer="selina"
 
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED 1
 
-# These folders will be copied to the docker image
+# Copy folders from local drive to container image.
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
-# our working directory is where our commands will be execured.
-WORKDIR  /app
-# connection between the container to our machine. 
+
+# working directory is where the docker run commands will be execured.
+WORKDIR /app
+
+# connection port between the container to our machine.
 EXPOSE 8000
 
 ARG DEV=false
 
-RUN python -m venv /py && \ 
+# 1. apk is tha package manager for alpine linux.
+# 2. --virtual create a new virtual package name '.tmp-build-deps'
+#       with the listed dependencies (build-base, postgresql-dev, musl-dev).
+# 3. rm -rf removes the requirements.txt file in the /tmp folder.
+# 4. 'add user --disabled-password' creates a user 'django-user'
+#        with no password, home dir.
+RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
@@ -30,9 +38,8 @@ RUN python -m venv /py && \
         --no-create-home \
         django-user
 
-# update environment path for docker
+# update environment path. It specifies the directories to be searched to find a command.
 ENV PATH="/py/bin:$PATH"
 
-# this will switch our docker user from root to django user
-
+#switch our docker image user from root to django-user.
 USER django-user

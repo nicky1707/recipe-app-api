@@ -4,8 +4,8 @@ Recipe api project.
 ## Dockerfile breakdown
 ```sh
 
-RUN python -m env /py && \ 
-    /py/bin/pip install --upgrade pip && \ # 
+RUN python -m env /py && \
+    /py/bin/pip install --upgrade pip && \ #
     /py/bin/pip install -r /tmp/requirements.ext && \
     rm -rf /tmp && \
     adduser \
@@ -19,7 +19,7 @@ line 1 : create a virtual env
 
 line 2 : upgrade pip
 
-line 3 : install dependencies in requirements.txt 
+line 3 : install dependencies in requirements.txt
 
 line 4 : removes the requirements.txt file
 
@@ -34,7 +34,7 @@ line 7 : Dont create a home directory for the user.
 line 8 : user name.
 
 
-## docker-compose.yml Breakdown 
+## docker-compose.yml Breakdown
 
 ```docker
 
@@ -42,7 +42,7 @@ version: "3.9"
 
 services:
   app:
-    build: 
+    build:
       context: .
     ports:
       - "8000:8000"

@@ -10,29 +10,49 @@ from core import models
 
 
 class UserAdmin(BaseUserAdmin):
-    ordering = ["id"]
-    list_display = ["email", "name"]
+    ordering = ["id"] # order by id in admin page.
+    list_display = ["email", "name"] # display email and name fields
     fieldsets = (
-        (None, {'fields':('email','password',)}),
         (
-            _('permissions'),
+            None,
             {
-                'fields': (
-                    'is_active',
-                    'is_staff',
-                    'is_superuser',
+                "fields": (
+                    "email",
+                    "password",
                 )
-            }
+            },
         ),
-        (_('Important dates'), {'fields': ('last_login',)}),
+        (
+            _("permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                )
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login",)}),
     )
 
-    readonly_fields = ['last_login']
+    readonly_fields = ["last_login"] # make last_login field read only.
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',), # custom css classes
-            'fields': ('email','password1','password2','name','is_active','is_staff','is_superuser',)
-        }),
+        (
+            None,
+            {
+                "classes": ("wide",),  # custom css classes
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "name",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                ),
+            },
+        ),
     )
+
 
 admin.site.register(models.User, UserAdmin)

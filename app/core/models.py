@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
-
+# Custom Model Manager for User model.
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
 
@@ -20,25 +20,25 @@ class UserManager(BaseUserManager):
         user.set_password(password)  # encrypt and save the password
         user.save(using=self._db)  # saves the user to database.
 
-        return user
+        return user # returns the user model.
 
     def create_superuser(self, email, password):
         """Create and return a superuser"""
-        user = self.create_user(email=email, password=password)
-        user.is_staff = True  # makes the user a admin
-        user.is_superuser = True
-        user.save(using=self._db)
+        user = self.create_user(email=email, password=password) # create a user
+        user.is_staff = True  # makes the user a admin.
+        user.is_superuser = True # makes the user a superuser.
+        user.save(using=self._db) # saves the user to database.
 
-        return user
+        return user # reuturns the user model.
 
 
-# Create your models here.
+# Overriding the default User model.
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=225, unique=True)
     name = models.CharField(max_length=225)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    objects = UserManager()  # assign user manager
+    objects = UserManager()  # assigning user manager.
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "email" # set email as the default username field
